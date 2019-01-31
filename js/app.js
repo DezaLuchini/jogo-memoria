@@ -42,3 +42,52 @@ function shuffle(array) {
 
     return array;
 }
+
+document.querySelector('.deck').addEventListener('click', function(event) {
+  virarCarta(event.target);
+});
+
+/**
+* @description função para virar as cartas
+* @param {element} carta
+*/
+function virarCarta(carta) {
+  if (carta.className == "card") {
+    carta.className = "card open show";
+    cartaAberta(carta);
+  };
+}
+
+/**
+* @description função para abrir a carta
+* @param {element} carta
+*/
+let listaCartaAberta = [];
+function cartaAberta(carta) {
+  listaCartaAberta.push(carta);
+  if(listaCartaAberta.length === 2) {
+    if(listaCartaAberta[0].innerHTML === listaCartaAberta[1].innerHTML) {
+      acertou();
+    } else {
+      setTimeout(errou, 500);
+    };
+  };
+}
+
+/**
+* @description função para mostrar que acertou as cartas
+*/
+function acertou() {
+  listaCartaAberta[0].className = "card match";
+  listaCartaAberta[1].className = "card match";
+  listaCartaAberta = [];
+}
+
+/**
+* @description função para mostrar que errou as cartas
+*/
+function errou() {
+  listaCartaAberta[0].className = "card";
+  listaCartaAberta[1].className = "card";
+  listaCartaAberta = [];
+}
