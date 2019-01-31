@@ -103,3 +103,21 @@ h1 {
   float: right;
   cursor: pointer;
 }
+
+/* Styles for the screen up to 700px */
+
+@media (max-width:700px) {
+  .deck {
+    width: 90%;
+    min-height: 500px;
+  }
+
+  .deck .card {
+    width: 22%;
+    height: 90px;
+  }
+
+  .score-panel {
+    width: 50%;
+  }
+}
