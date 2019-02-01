@@ -72,6 +72,7 @@ function cartaAberta(carta) {
       setTimeout(errou, 500);
       contagemEstrelas();
     };
+    contagemMovimentos();
   };
 }
 
@@ -109,4 +110,13 @@ function contagemEstrelas() {
   if(contadorErros === 10) {
     estrela[1].className = "fa";
   };
+}
+
+/**
+* @description função para contagem de movimentos
+*/
+let contadorMovimentos = 0;
+function contagemMovimentos() {
+  contadorMovimentos++;
+  document.querySelector('.moves').textContent = contadorMovimentos;
 }
