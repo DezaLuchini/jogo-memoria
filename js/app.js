@@ -1,3 +1,4 @@
+// variáveis
 let listaDesenhos = [
   'fa-diamond', 'fa-diamond',
   'fa-paper-plane-o', 'fa-paper-plane-o',
@@ -8,6 +9,17 @@ let listaDesenhos = [
   'fa-bicycle', 'fa-bicycle',
   'fa-bomb', 'fa-bomb'
 ];
+let jogoIniciado = false;
+let listaCartaAberta = [];
+let contadorErros = 0;
+let contadorMovimentos = 0;
+let intervalo;
+let horaInicio;
+const estrela = document.querySelectorAll('.stars i');
+const cronometro = document.querySelector('.cronometro');
+const movimentos = document.querySelector('.moves');
+const deck = document.querySelector('.deck');
+const restart = document.querySelector('.restart');
 
 embaralhar();
 
@@ -16,7 +28,7 @@ embaralhar();
 */
 function embaralhar() {
   listaDesenhos = shuffle(listaDesenhos);
-  document.querySelector('.deck').innerHTML = "";
+  deck.innerHTML = "";
 
   for(let i = 0; i < listaDesenhos.length; i++) {
     let carta = document.createElement('li');
@@ -24,7 +36,7 @@ function embaralhar() {
     let desenho = document.createElement('i');
     desenho.className = "fa " + listaDesenhos[i];
     carta.appendChild(desenho);
-    document.querySelector('.deck').appendChild(carta);
+    deck.appendChild(carta);
   };
 }
 
@@ -44,7 +56,11 @@ function shuffle(array) {
 }
 
 // Evento de click nas cartas
-document.querySelector('.deck').addEventListener('click', function(event) {
+deck.addEventListener('click', function(event) {
+  if(!jogoIniciado) {
+    iniciarCronometro();
+    jogoIniciado = true;
+  }
   virarCarta(event.target);
 });
 
@@ -63,7 +79,6 @@ function virarCarta(carta) {
 * @description função para abrir a carta
 * @param {element} carta
 */
-let listaCartaAberta = [];
 function cartaAberta(carta) {
   listaCartaAberta.push(carta);
   if(listaCartaAberta.length === 2) {
@@ -84,6 +99,7 @@ function acertou() {
   listaCartaAberta[0].className = "card match";
   listaCartaAberta[1].className = "card match";
   listaCartaAberta = [];
+  setTimeout(tudoCerto, 500);
 }
 
 /**
@@ -101,8 +117,6 @@ function errou() {
 * Quando chegar em 10 erros, perde mais uma estrela
 * Ficando somente com 1 estrela
 */
-let contadorErros = 0;
-let estrela = document.querySelectorAll('.stars i');
 function contagemEstrelas() {
   contadorErros++;
   if(contadorErros === 5) {
@@ -116,19 +130,64 @@ function contagemEstrelas() {
 /**
 * @description função para contagem de movimentos
 */
-let contadorMovimentos = 0;
 function contagemMovimentos() {
   contadorMovimentos++;
-  document.querySelector('.moves').textContent = contadorMovimentos;
+  movimentos.textContent = contadorMovimentos;
 }
 
 // Evento de click no botão de reiniciar
-document.querySelector('.restart').addEventListener('click', function() {
+restart.addEventListener('click', function() {
   embaralhar();
   contadorErros = 0;
   contadorMovimentos = 0;
   listaCartaAberta = [];
   estrela[1].className = "fa fa-star";
   estrela[2].className = "fa fa-star";
-  document.querySelector('.moves').textContent = contadorMovimentos;
+  movimentos.textContent = contadorMovimentos;
+  pararCronometro();
+  jogoIniciado = false;
+  cronometro.innerHTML = "00:00:00";
 })
+
+/**
+* @description função para iniciar o cronômetro
+*/
+function iniciarCronometro() {
+  horaInicio = new Date().getTime();
+  intervalo = window.setInterval(cronometrar, 1000);
+}
+
+/**
+* @description função para calcular o tempo do jogo
+*/
+function cronometrar() {
+  let cron = new Date().getTime() - horaInicio;
+  let ms = cron % 1000;
+  cron = (cron - ms) / 1000;
+  let seg = cron % 60;
+  cron = (cron - seg) / 60;
+  let min = cron % 60;
+  let hor = (cron - min) / 60;
+  seg = seg.toString().padStart(2,0);
+  min = min.toString().padStart(2,0);
+  hor = hor.toString().padStart(2,0);
+  cronometro.innerHTML = hor + ":" + min + ":" + seg;
+}
+
+/**
+* @description função para parar o cronômetro
+*/
+function pararCronometro() {
+  window.clearInterval(intervalo);
+}
+
+/**
+* @description função para verificar o fim do jogo
+*/
+function tudoCerto() {
+  const cartasMatch = document.querySelectorAll(".match");
+  if(cartasMatch.length === 16) {
+    pararCronometro();
+    alert("Você ganhou");
+  };
+}
