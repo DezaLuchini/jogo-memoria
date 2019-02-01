@@ -43,6 +43,7 @@ function shuffle(array) {
     return array;
 }
 
+// Evento de click nas cartas
 document.querySelector('.deck').addEventListener('click', function(event) {
   virarCarta(event.target);
 });
@@ -101,9 +102,9 @@ function errou() {
 * Ficando somente com 1 estrela
 */
 let contadorErros = 0;
+let estrela = document.querySelectorAll('.stars i');
 function contagemEstrelas() {
   contadorErros++;
-  let estrela = document.querySelectorAll('.stars i');
   if(contadorErros === 5) {
     estrela[2].className = "fa";
   };
@@ -120,3 +121,14 @@ function contagemMovimentos() {
   contadorMovimentos++;
   document.querySelector('.moves').textContent = contadorMovimentos;
 }
+
+// Evento de click no botão de reiniciar
+document.querySelector('.restart').addEventListener('click', function() {
+  embaralhar();
+  contadorErros = 0;
+  contadorMovimentos = 0;
+  listaCartaAberta = [];
+  estrela[1].className = "fa fa-star";
+  estrela[2].className = "fa fa-star";
+  document.querySelector('.moves').textContent = contadorMovimentos;
+})
