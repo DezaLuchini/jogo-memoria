@@ -70,6 +70,7 @@ function cartaAberta(carta) {
       acertou();
     } else {
       setTimeout(errou, 500);
+      contagemEstrelas();
     };
   };
 }
@@ -90,4 +91,22 @@ function errou() {
   listaCartaAberta[0].className = "card";
   listaCartaAberta[1].className = "card";
   listaCartaAberta = [];
+}
+
+/**
+* @description função para contagem de movimentos errados e contagem de estrelas
+* Quando o jogador tiver 5 erros, perde uma estrela
+* Quando chegar em 10 erros, perde mais uma estrela
+* Ficando somente com 1 estrela
+*/
+let contadorErros = 0;
+function contagemEstrelas() {
+  contadorErros++;
+  let estrela = document.querySelectorAll('.stars i');
+  if(contadorErros === 5) {
+    estrela[2].className = "fa";
+  };
+  if(contadorErros === 10) {
+    estrela[1].className = "fa";
+  };
 }
