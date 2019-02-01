@@ -205,6 +205,6 @@ function tudoCerto() {
     let mensagemGanhou = "<p>Você fez " + contadorMovimentos + " movimentos em " + cronometro.innerHTML + " com uma pontuação de " + qtdEstrelas + " estrelas!!!</p>";
     let mensagemJogarNovamente = "<p>Quer jogar de novo?</p>";
     mensagemModal.innerHTML = mensagemGanhou + mensagemJogarNovamente;
-    $('#modalFimDeJogo').modal('show');
+    $('#modalFimDeJogo').modal({backdrop: 'static', keyboard: false});
   };
 }
